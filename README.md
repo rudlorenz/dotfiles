@@ -13,12 +13,15 @@ I'm flaking my OS
 - [ ] Add prettier fmt (or some other kind of formatter) to format all files in repo.
 - [ ] Choose tiling WM.
 - [ ] Rice your WM.
-- [ ] Finish setting up segments in starship.
+- [x] ~~Finish setting up segments in starship.~~ (sort of, good enough for now)
 - [ ] Font in kitty doesn't look right.
 - [ ] Make OneDark-Pro darker kitty theme to match vscode colors. Or at least think about it.
 - [ ] Declaratively describe firefox and firefox addons.
 - [ ] ZSH case insensitive autocomplete.
 - [ ] ZSH plugin manager. Maybe, OMZ is not the way anymore.
+- [ ] Check what's the deal with `flake-parts` and dendritic pattern.
+- [ ] `vim` config.
+- [ ] Switch to unstable channel?
 
 ## Notes and stuff
 

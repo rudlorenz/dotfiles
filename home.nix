@@ -4,9 +4,8 @@ let
   # nix wrapper around hiddify appimage
   hiddify = pkgs.callPackage ./hiddify.nix { };
 
-  # modified catppucin theme for starship prompt
-  catppucin-starship = ./catppuccin-starship.toml;
-
+  # slightly modified default starship theme
+  default-starship = ./starship-default.toml;
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -65,6 +64,10 @@ in
         user.email = "rudlorenz@gmail.com";
         core.editor = "nvim";
       };
+    };
+
+    bat = {
+      enable = true;
     };
 
     direnv = {
@@ -130,6 +133,7 @@ in
         "terminal.integrated.defaultProfile.linux" = "zsh";
         "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font Mono";
         # "terminal.integrated.fontFamily" = "FiraMono Nerd Font";
+
         # setting up nix-ide extension to use nil lsp
         "nix.enableLanguageServer" = true;
         "nix.serverPath" = "nil";
@@ -140,7 +144,6 @@ in
       enable = true;
       shellIntegration.enableZshIntegration = true;
       enableGitIntegration = true;
-      # themeFile = "Catppuccin-Mocha";
       themeFile = "OneDark-Pro";
       font = {
         name = "JetBrainsMono Nerd Font Mono";
@@ -151,7 +154,7 @@ in
       enable = true;
       enableZshIntegration = true;
 
-      settings = builtins.fromTOML (builtins.readFile catppucin-starship);
+      settings = builtins.fromTOML (builtins.readFile default-starship);
     };
 
     zsh = {
