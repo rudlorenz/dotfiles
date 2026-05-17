@@ -75,6 +75,12 @@
     options = "grp:win_space_toggle";
   };
 
+  services.logind.settings.Login = {
+    HandleLidSwitch = "hibernate";
+    HandleLidSwitchExternalPower = "hibernate";
+    HandleLidSwitchDocked = "hibernate";
+  };
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
