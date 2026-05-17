@@ -9,7 +9,9 @@ I'm flaking my OS
 - [ ] check [gh issue](https://github.com/starship/starship/discussions/5950) for starship transient prompt in zsh.
 - [ ] Think about what to add to README. Should I write something? Maybe describe what's up?
 - [ ] Install steam.
-- [ ] HIFI audiofile setup. Find good player, find a proper way to configure mojo2 in the system.
+- [X] ~~HIFI audiofile setup. Find good player, find a proper way to configure mojo2 in the system.~~
+- [ ] Choose and install music player.
+- [ ] Checkout jellyfish and clients. Checkout MPD
 - [ ] Add prettier fmt (or some other kind of formatter) to format all files in repo.
 - [ ] Choose tiling WM.
 - [ ] Rice your WM.
@@ -29,3 +31,4 @@ check [dynamic theme toggle in HM](https://discourse.nixos.org/t/home-manager-to
 
 [Signing commits with ssh key and gpg via home-manager](https://jeppesen.io/git-commit-sign-nix-home-manager-ssh/)
 
+Some article about music players with a couple of examples. [link](https://crescentro.se/posts/linux-music-players-2026/)

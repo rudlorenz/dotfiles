@@ -92,13 +92,43 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    extraConfig.pipewire."10-pro-audio" = {
+      "context.properties" = {
+        "default.clock.rate" = 48000;
+        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
+        "default.clock.quantum" = 512;
+        "default.clock.min-quantum" = 256;
+        "default.clock.max-quantum" = 2048;
+      };
+    };
+
+    wireplumber.extraConfig."10-mojo2" = {
+      "monitor.alsa.rules" = [
+        {
+          matches = [{
+            "node.name" = "~alsa_output.*";
+            "device.vendor.id" = "usb:245f";
+          }];
+          actions = {
+            "update-props" = {
+              "audio.format" = "S32LE";
+              "audio.rate" = [ 44100 48000 88200 96000 176400 192000 352800 384000 705600 768000 ];
+              "node.pause-on-idle" = false;
+              "api.alsa.period-size" = 256;
+            };
+          };
+        }
+      ];
+    };
   };
+
+  # disable usb autosuspend for chord mojo2
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="245f", ATTRS{idProduct}=="0815", ATTR{power/control}="on"
+  '';
+
+  # Enable CUPS to print documents.
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
