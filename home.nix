@@ -97,6 +97,11 @@ in
       enable = true;
     };
 
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     tealdeer = {
       enable = true;
       settings = {
