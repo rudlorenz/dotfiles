@@ -57,6 +57,24 @@ in
   programs = {
     home-manager.enable = true;
 
+    mpv = {
+      enable = true;
+      config = {
+        vo = "gpu-next";
+        gpu-api = "vulkan";
+        target-colorspace-hint = "yes";
+        target-peak = 203;
+        hdr-compute-peak = "yes";
+        tone-mapping = "bt.2390";
+        hdr-peak-percentile = 99.95;
+        allow-delayed-peak-detect = "yes";
+      };
+      profiles.projector = {
+        target-colorspace-hint = "yes";
+        target-peak = 1200;
+      };
+    };
+
     git = {
       enable = true;
       settings = {
