@@ -167,8 +167,6 @@
     ];
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
   programs.zsh.enable = true;
 
   # Allow unfree packages
@@ -187,7 +185,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     git
-    kitty
     wget
   ];
 

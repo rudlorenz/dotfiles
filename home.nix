@@ -128,6 +128,9 @@ in
       enable = true;
       settings = {
         updates.auto_update = true;
+        display = {
+          compact = true;
+        };
       };
     };
 
@@ -218,6 +221,8 @@ in
       };
 
       initContent = ''
+        setopt histreduceblanks
+
         # Grep here shortcut
         function gh() {
           rg -n -- "$1"
