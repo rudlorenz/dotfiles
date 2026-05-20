@@ -105,10 +105,14 @@ in
       enable = true;
       vimAlias = true;
       defaultEditor = true;
+      # HM screams warnings about that, so let's appease it
+      withRuby = false;
+      withPython3 = false;
     };
 
     firefox = {
       enable = true;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
     };
 
     fd = {
@@ -124,6 +128,13 @@ in
       enable = true;
       settings = {
         updates.auto_update = true;
+      };
+    };
+
+    opencode = {
+      enable = true;
+      tui = {
+        theme = "one-dark";
       };
     };
 

@@ -96,7 +96,14 @@
     extraConfig.pipewire."10-pro-audio" = {
       "context.properties" = {
         "default.clock.rate" = 48000;
-        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
+        "default.clock.allowed-rates" = [
+          44100
+          48000
+          88200
+          96000
+          176400
+          192000
+        ];
         "default.clock.quantum" = 512;
         "default.clock.min-quantum" = 256;
         "default.clock.max-quantum" = 2048;
@@ -106,14 +113,27 @@
     wireplumber.extraConfig."10-mojo2" = {
       "monitor.alsa.rules" = [
         {
-          matches = [{
-            "node.name" = "~alsa_output.*";
-            "device.vendor.id" = "usb:245f";
-          }];
+          matches = [
+            {
+              "node.name" = "~alsa_output.*";
+              "device.vendor.id" = "usb:245f";
+            }
+          ];
           actions = {
             "update-props" = {
               "audio.format" = "S32LE";
-              "audio.rate" = [ 44100 48000 88200 96000 176400 192000 352800 384000 705600 768000 ];
+              "audio.rate" = [
+                44100
+                48000
+                88200
+                96000
+                176400
+                192000
+                352800
+                384000
+                705600
+                768000
+              ];
               "node.pause-on-idle" = false;
               "api.alsa.period-size" = 256;
             };
@@ -190,6 +210,8 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+
+  # services.fwupd.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
