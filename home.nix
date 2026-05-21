@@ -86,6 +86,9 @@ in
 
     bat = {
       enable = true;
+      config = {
+        theme = "TwoDark";
+      };
     };
 
     direnv = {
@@ -130,6 +133,13 @@ in
         updates.auto_update = true;
         display = {
           compact = true;
+        };
+        style = {
+          description.foreground = "white";
+          example_text.foreground = "white";
+          example_code.foreground = "blue";
+          command_name.foreground = "blue";
+          example_variable.foreground = "blue";
         };
       };
     };
@@ -180,7 +190,7 @@ in
     nh = {
       enable = true;
       clean.enable = true;
-      clean.extraArgs = "--keep-since 4d --keep 3";
+      clean.extraArgs = "--keep-since 5d --keep 5";
       flake = "/home/rudlorenz/.dotfiles";
     };
 
