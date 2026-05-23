@@ -2,7 +2,7 @@
 
 let
   # nix wrapper around hiddify appimage
-  hiddify = pkgs.callPackage ./hiddify.nix { };
+  hiddify-wrapped = pkgs.callPackage ./hiddify.nix { };
 
   # slightly modified default starship theme
   default-starship = ./starship-default.toml;
@@ -46,7 +46,7 @@ in
     nil
     nixfmt
 
-    hiddify
+    hiddify-wrapped
 
     nerd-fonts.sauce-code-pro
     nerd-fonts.jetbrains-mono
@@ -263,6 +263,16 @@ in
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/input-sources" = {
+      xkb-options = [
+        "grp:win_space_toggle"
+        "ctrl:nocaps"
+      ];
+    };
   };
 
   # Home Manager can also manage your environment variables through
