@@ -70,6 +70,7 @@
 
   boot.kernelParams = [
     "nvidia.NVreg_EnableGpuShutdown=1"
+    "nvidia.NVreg_UseKernelSuspendNotifiers=1"
     "mem_sleep_default=deep"
     "resume_offset=176128"
   ];

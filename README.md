@@ -32,3 +32,5 @@ check [dynamic theme toggle in HM](https://discourse.nixos.org/t/home-manager-to
 [Signing commits with ssh key and gpg via home-manager](https://jeppesen.io/git-commit-sign-nix-home-manager-ssh/)
 
 Some article about music players with a couple of examples. [link](https://crescentro.se/posts/linux-music-players-2026/)
+
+Check NixOs discourse about semi broken nvidia modules [link](https://discourse.nixos.org/t/can-we-solve-the-nvidia-situation/73198/6)
