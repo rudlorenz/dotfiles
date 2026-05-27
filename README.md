@@ -23,7 +23,7 @@ I'm flaking my OS
 - [ ] ZSH plugin manager. Maybe, OMZ is not the way anymore.
 - [ ] Check what's the deal with `flake-parts` and dendritic pattern.
 - [ ] `vim` config.
-- [ ] Switch to unstable channel?
+- [X] ~~Switch to unstable channel?~~
 
 ## Notes and stuff
 

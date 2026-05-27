@@ -8,6 +8,10 @@ let
   default-starship = ./starship-default.toml;
 in
 {
+  imports = [ ./modules/gnome.nix ];
+
+  desktopEnvironmentOptions.gnome.enable = true;
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "rudlorenz";
@@ -266,31 +270,6 @@ in
 
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/input-sources" = {
-      xkb-options = [
-        "grp:win_space_toggle"
-        "ctrl:nocaps"
-      ];
-    };
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/rudlorenz/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     # EDITOR = "vim";
   };
