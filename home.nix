@@ -206,6 +206,9 @@ in
       font = {
         name = "JetBrainsMono Nerd Font Mono";
       };
+      settings = {
+        "map" = "ctrl+shift+n new_os_window_with_cwd";
+      };
     };
 
     starship = {
