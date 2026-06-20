@@ -167,10 +167,15 @@
     ];
   };
 
-  programs.zsh.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  programs.zsh.enable = true;
+
+  programs.steam = {
+    enable = true;
+    extraPackages = [ pkgs.adwaita-icon-theme ];
+  };
 
   # Allowing to run appimage files.
   programs.appimage.enable = true;
@@ -186,6 +191,7 @@
   environment.systemPackages = with pkgs; [
     git
     wget
+    fzf
   ];
 
   environment.variables.EDITOR = "nvim";

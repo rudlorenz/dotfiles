@@ -56,6 +56,8 @@ in
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     nerd-fonts.fira-mono
+
+    qbittorrent
   ];
 
   programs = {
@@ -77,6 +79,11 @@ in
         target-colorspace-hint = "yes";
         target-peak = 1200;
       };
+    };
+
+    mangohud = {
+      enable = true;
+      enableSessionWide = true;
     };
 
     git = {

@@ -8,7 +8,7 @@ I'm flaking my OS
 
 - [ ] check [gh issue](https://github.com/starship/starship/discussions/5950) for starship transient prompt in zsh.
 - [ ] Think about what to add to README. Should I write something? Maybe describe what's up?
-- [ ] Install steam.
+- [X] ~~Install steam.~~
 - [X] ~~HIFI audiofile setup. Find good player, find a proper way to configure mojo2 in the system.~~
 - [ ] Choose and install music player.
 - [ ] Checkout jellyfish and clients. Checkout MPD
@@ -19,7 +19,7 @@ I'm flaking my OS
 - [ ] Font in kitty doesn't look right.
 - [ ] Make OneDark-Pro darker kitty theme to match vscode colors. Or at least think about it.
 - [ ] Declaratively describe firefox and firefox addons.
-- [ ] ZSH case insensitive autocomplete.
+- [X] ~~ZSH case insensitive autocomplete.~~
 - [ ] ZSH plugin manager. Maybe, OMZ is not the way anymore.
 - [ ] Check what's the deal with `flake-parts` and dendritic pattern.
 - [ ] `vim` config.
