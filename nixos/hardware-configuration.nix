@@ -51,20 +51,33 @@
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Nvidia stuff.
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
-    open = false;
+    open = true;
     modesetting.enable = true;
+    powerManagement.enable = true;
+    powerManagement.finegrained = true;
+
+    nvidiaSettings = true;
 
     prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
       intelBusId = "PCI:0@0:2:0";
-      nvidiaBusId = "PCI:1@0:0:0";
+      nvidiaBusId = "PCI:0@1:0:0";
     };
-  };
 
-  powerManagement.enable = true;
+    #   moduleParams = {
+    #     nvidia.NVreg_DynamicPowerManagement = "0x02";
+    #   };
+  };
 
   boot.resumeDevice = "/dev/disk/by-uuid/f0d2cd6a-b711-4e42-acd7-cbd6bd0de145";
 
