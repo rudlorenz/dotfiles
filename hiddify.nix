@@ -25,7 +25,9 @@ appimageTools.wrapType2 {
     install -Dm644 ${appimageContents}/hiddify.desktop $out/share/applications/hiddify.desktop
     cp -a ${appimageContents}/usr/share/icons $out/share/
     substituteInPlace $out/share/applications/hiddify.desktop \
-      --replace 'LD_LIBRARY_PATH=usr/lib ' ''''''
+      --replace 'Exec=LD_LIBRARY_PATH=usr/lib hiddify' 'Exec=hiddify'
+    substituteInPlace $out/share/applications/hiddify.desktop \
+      --replace 'Icon=hiddify' "Icon=$out/share/icons/hicolor/128x128/apps/hiddify"
   '';
 
   meta = {

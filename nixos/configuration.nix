@@ -146,6 +146,9 @@
   # disable usb autosuspend for chord mojo2
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="245f", ATTRS{idProduct}=="0815", ATTR{power/control}="on"
+
+    # Disable wakeup for any USB mouse (HID boot-protocol interface); keyboards still wake
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{bInterfaceProtocol}=="02", RUN+="/bin/sh -c 'echo disabled > /sys/bus/usb/devices/$parent/power/wakeup'"
   '';
 
   # Enable CUPS to print documents.
@@ -199,6 +202,11 @@
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+  ];
+
+  nix.settings.extra-substituters = [
+    "https://mirror.yandex.ru/nixos/"
+    "https://cache.nixos.org/"
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

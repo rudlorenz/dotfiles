@@ -81,11 +81,6 @@ in
       };
     };
 
-    mangohud = {
-      enable = true;
-      enableSessionWide = true;
-    };
-
     git = {
       enable = true;
       settings = {
