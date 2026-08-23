@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 let
   # nix wrapper around hiddify appimage
@@ -8,7 +13,10 @@ let
   default-starship = ./starship-default.toml;
 in
 {
-  imports = [ ./modules/gnome.nix ];
+  imports = [
+    ./modules/gnome.nix
+    inputs.agenix.homeManagerModules.default
+  ];
 
   desktopEnvironmentOptions.gnome.enable = true;
 
@@ -60,6 +68,17 @@ in
     qbittorrent
   ];
 
+  age = {
+    identityPaths = [ "/home/rudlorenz/.ssh/agenix_identity" ];
+    secrets = {
+      id_ed25519 = {
+        file = ./ssh-key.age;
+        path = "${config.home.homeDirectory}/.ssh/rudlorenz";
+        mode = "0600";
+      };
+    };
+  };
+
   programs = {
     home-manager.enable = true;
 
@@ -87,6 +106,15 @@ in
         user.name = "Rudolph Lorenz";
         user.email = "rudlorenz@gmail.com";
         core.editor = "nvim";
+      };
+    };
+
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings."*" = {
+        AddKeysToAgent = "yes";
+        HashKnownHosts = true;
       };
     };
 

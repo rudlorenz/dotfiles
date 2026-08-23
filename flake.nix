@@ -9,6 +9,11 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -17,7 +22,7 @@
       nixpkgs,
       home-manager,
       ...
-    }:
+    }@inputs:
     {
       nixosConfigurations.vulture-nixos = nixpkgs.lib.nixosSystem {
         modules = [
@@ -28,6 +33,8 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.rudlorenz = import ./home.nix;
+
+            home-manager.extraSpecialArgs = { inherit inputs; };
           }
         ];
       };

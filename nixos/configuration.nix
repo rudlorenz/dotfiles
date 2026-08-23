@@ -170,6 +170,8 @@
     ];
   };
 
+  users.users.root.shell = pkgs.zsh;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -195,6 +197,8 @@
     git
     wget
     fzf
+    # looks like a hack a bit, but w/e
+    # agenix.packages.${pkgs.system}.default
   ];
 
   environment.variables.EDITOR = "nvim";
