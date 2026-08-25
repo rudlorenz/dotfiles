@@ -20,6 +20,7 @@
   boot.loader.timeout = 10;
 
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   boot.loader.grub.theme = (
     pkgs.sleek-grub-theme.override {
