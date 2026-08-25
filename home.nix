@@ -120,7 +120,7 @@ in
       settings."*" = {
         AddKeysToAgent = "yes";
         HashKnownHosts = true;
-        IdentityFile = "/home/rudlorenz/.ssh/rudlorenz";
+        IdentityFile = "/home/rudlorenz/.ssh/rudlorenz_ed25519";
         IdentitiesOnly = "yes";
       };
     };
