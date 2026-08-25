@@ -64,6 +64,12 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
+  # Use the standard OpenSSH ssh-agent instead of GNOME's gcr-ssh-agent.
+  # The two conflict (build-time assertion in services.gnome.gcr-ssh-agent);
+  # only one SSH agent may be active at a time.
+  services.gnome.gcr-ssh-agent.enable = false;
+  programs.ssh.startAgent = true;
+
   # Enable autologin
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "rudlorenz";

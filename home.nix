@@ -106,6 +106,11 @@ in
         user.name = "Rudolph Lorenz";
         user.email = "rudlorenz@gmail.com";
         core.editor = "nvim";
+
+        push.autoSetupRemote = true;
+        # makes git a bit faster in really large repos
+        core.fsmonitor = true;
+        core.untrackedCache = true;
       };
     };
 
@@ -115,6 +120,8 @@ in
       settings."*" = {
         AddKeysToAgent = "yes";
         HashKnownHosts = true;
+        IdentityFile = "/home/rudlorenz/.ssh/rudlorenz";
+        IdentitiesOnly = "yes";
       };
     };
 
