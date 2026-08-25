@@ -269,6 +269,7 @@ in
 
       shellAliases = {
         bt = "bat --style=-numbers";
+        btt = "bat --style=-numbers --no-pager";
 
         glg = "git --no-pager log -n 20 --oneline";
         gitlg = "git --no-pager log develop.. --oneline";
@@ -277,6 +278,11 @@ in
       initContent = ''
         setopt histreduceblanks
 
+        # case insensitive autocomp
+        # cause I'm too lazy to setup ohmyzsh
+        zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+
         # Grep here shortcut
         function gh() {
           rg -n -- "$1"
@@ -284,6 +290,151 @@ in
 
         function mkcdir() {
           mkdir -p -- "$1" && cd "$1"
+        }
+
+        # Get HEAD commit hash
+        function gitcm() {
+          local commit_hash
+          if ! commit_hash=$(git rev-parse HEAD 2>/dev/null); then echo "Error: not a git repository or no commits found."
+            return 1
+          fi
+          echo -n "$commit_hash"
+        }
+
+        # Helper: detect the default branch (master → main fallback)
+        function _git_default_branch() {
+          local default_branch
+          default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)
+          default_branch=''${default_branch#refs/remotes/origin/}
+
+          if [[ -z "$default_branch" ]]; then
+            if git rev-parse --verify master &>/dev/null; then
+              default_branch="master"
+            else
+              default_branch="main"
+            fi
+          fi
+
+          echo "$default_branch"
+        }
+
+        # Run git log against the default branch
+        function gitlgm() {
+          local default_branch
+          default_branch=$(_git_default_branch)
+          git --no-pager log "$default_branch".. --oneline
+        }
+
+        # Rebase current branch onto the updated default branch with --autosquash
+        function gitbump() {
+          emulate -L zsh
+          local current_branch local_commits rebase_target default_branch
+
+          if ! git rev-parse --git-dir &>/dev/null; then
+            print -u2 "Error: not inside a git repository."
+            return 1
+          fi
+
+          current_branch=$(git branch --show-current)
+          if [[ -z "$current_branch" ]]; then
+            print -u2 "Error: detached HEAD. Checkout your feature branch first."
+            return 1
+          fi
+
+          default_branch=$(_git_default_branch)
+
+          if [[ "$current_branch" == "$default_branch" ]]; then
+            print -u2 "Error: you're already on $default_branch. Switch to a feature branch."
+            return 1
+          fi
+
+          if ! git diff --quiet HEAD; then
+            print -u2 "Error: you have uncommitted changes. Commit or stash them first."
+            return 1
+          fi
+
+          # fetch the latest default branch from origin
+          echo "→ Fetching origin/$default_branch..."
+          if ! git fetch origin "$default_branch"; then
+            print -u2 "Error: failed to fetch from origin."
+            return 1
+          fi
+
+          # update local default branch
+          if git rev-parse --verify "$default_branch" &>/dev/null; then
+            if git merge-base --is-ancestor "$default_branch" "origin/$default_branch" 2>/dev/null; then
+              git branch -f "$default_branch" "origin/$default_branch"
+              rebase_target="$default_branch"
+            else
+              print -u2 "Warning: local $default_branch diverged from origin. Rebasing onto origin/$default_branch."
+              rebase_target="origin/$default_branch"
+            fi
+          else
+            git branch "$default_branch" "origin/$default_branch"
+            rebase_target="$default_branch"
+          fi
+
+          # check if there is anything to rebase
+          local_commits=$(git rev-list --count "$rebase_target"..HEAD)
+
+          if (( local_commits == 0 )); then
+            echo "→ No local commits to rebase. Already up to date with $rebase_target."
+            return 0
+          fi
+
+          echo "→ Rebasing $current_branch ($local_commits commits) onto $rebase_target with --autosquash..."
+          git rebase -i --autosquash "$rebase_target"
+        }
+
+        # Delete local branches whose remote was deleted and changes are in the default branch
+        # Works with squash-merged branches (uses git cherry instead of --is-ancestor)
+        function gitprune() {
+          local default_branch branches_to_delete branch
+
+          # Fetch and prune stale remote-tracking refs
+          echo "Fetching origin..."
+          git fetch --all --prune 2>&1 || return 1
+
+          default_branch=$(_git_default_branch)
+
+          # Find local branches whose remote-tracking ref is gone
+          # Uses git for-each-ref for reliable, machine-readable output
+          branches_to_delete=()
+          for branch in $(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ | awk '$2 == "[gone]" {print $1}'); do
+            # Skip the default branch (shouldn't happen, but just in case)
+            [[ "$branch" == "$default_branch" ]] && continue
+
+            # Check if all branch changes are already in the default branch.
+            # git cherry handles squash-merged branches (which --is-ancestor misses).
+            # Lines starting with '-' mean the commit is equivalent in the base;
+            # lines starting with '+' mean it's unique to the branch.
+            if ! git cherry "$default_branch" "$branch" 2>/dev/null | rg -q '^+'; then
+              branches_to_delete+=("$branch")
+            else
+              echo "Skipping '$branch': remote is gone but changes may not be in '$default_branch'."
+            fi
+          done
+
+          if (( ''${#branches_to_delete[@]} == 0 )); then
+            echo "No branches with gone remotes found."
+            return 0
+          fi
+
+          echo "Branches safe to delete (remote gone, changes in '$default_branch'):"
+          printf '  %s\n' "''${branches_to_delete[@]}"
+          echo ""
+
+          # Ask for confirmation
+          read -q "REPLY?Delete these branches? [y/N] "
+          echo ""
+          if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+            for branch in "''${branches_to_delete[@]}"; do
+              git branch -D "$branch"
+            done
+            echo "Done."
+          else
+            echo "Cancelled."
+          fi
         }
       '';
     };

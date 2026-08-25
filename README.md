@@ -17,13 +17,16 @@ I'm flaking my OS
 - [ ] Rice your WM.
 - [x] ~~Finish setting up segments in starship.~~ (sort of, good enough for now)
 - [ ] Font in kitty doesn't look right.
+- [ ] Most of the things in kitty doesn't work right.
 - [ ] Make OneDark-Pro darker kitty theme to match vscode colors. Or at least think about it.
 - [ ] Declaratively describe firefox and firefox addons.
 - [X] ~~ZSH case insensitive autocomplete.~~
-- [ ] ZSH plugin manager. Maybe, OMZ is not the way anymore.
+- [ ] ZSH plugin manager. Maybe, OMZ is not the way anymore. And proper autocomplete.
+- [ ] Move zsh functions (and maybe whole zsh config) to a different module.
 - [ ] Check what's the deal with `flake-parts` and dendritic pattern.
 - [ ] `vim` config.
 - [X] ~~Switch to unstable channel?~~
+- [ ] VULTURE specific: resize boot partition
 
 ## Notes and stuff
 
