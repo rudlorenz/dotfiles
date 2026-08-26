@@ -15,7 +15,7 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.device = "nodev";
-  boot.loader.grub.configurationLimit = 5;
+  boot.loader.grub.configurationLimit = 15;
 
   boot.loader.timeout = 10;
 
@@ -219,6 +219,17 @@
     "https://mirror.yandex.ru/nixos/"
     "https://cache.nixos.org/"
   ];
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = "weekly";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

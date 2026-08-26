@@ -26,7 +26,7 @@ I'm flaking my OS
 - [ ] Check what's the deal with `flake-parts` and dendritic pattern.
 - [ ] `vim` config.
 - [X] ~~Switch to unstable channel?~~
-- [ ] VULTURE specific: resize boot partition
+- [X] ~~VULTURE specific: resize boot partition~~
 
 ## Notes and stuff
 
