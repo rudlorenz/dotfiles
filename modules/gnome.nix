@@ -42,7 +42,7 @@ in
       };
 
       "org/gnome/shell" = {
-        disable_user_extensions = false;
+        disable-user-extensions = false;
         enabled-extensions = map (ext: ext.extensionUuid) extensions;
       };
     };
