@@ -158,8 +158,6 @@
     ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{bInterfaceProtocol}=="02", RUN+="/bin/sh -c 'echo disabled > /sys/bus/usb/devices/$parent/power/wakeup'"
   '';
 
-  # Enable CUPS to print documents.
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -207,8 +205,6 @@
     # looks like a hack a bit, but w/e
     # agenix.packages.${pkgs.system}.default
   ];
-
-  environment.variables.EDITOR = "nvim";
 
   nix.settings.experimental-features = [
     "nix-command"

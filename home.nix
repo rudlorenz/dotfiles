@@ -20,8 +20,6 @@ in
 
   desktopEnvironmentOptions.gnome.enable = true;
 
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "rudlorenz";
   home.homeDirectory = "/home/rudlorenz";
 
@@ -34,13 +32,7 @@ in
   # release notes.
   home.stateVersion = "25.11"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
   home.packages = with pkgs; [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -69,7 +61,7 @@ in
   ];
 
   age = {
-    identityPaths = [ "/home/rudlorenz/.ssh/agenix_identity" ];
+    identityPaths = [ "${config.home.homeDirectory}/.ssh/agenix_identity" ];
     secrets = {
       id_ed25519 = {
         file = ./ssh-key.age;
@@ -120,7 +112,7 @@ in
       settings."*" = {
         AddKeysToAgent = "yes";
         HashKnownHosts = true;
-        IdentityFile = "/home/rudlorenz/.ssh/rudlorenz_ed25519";
+        IdentityFile = "${config.home.homeDirectory}/.ssh/rudlorenz_ed25519";
         IdentitiesOnly = "yes";
       };
     };
@@ -232,7 +224,7 @@ in
       enable = true;
       clean.enable = true;
       clean.extraArgs = "--keep-since 5d --keep 5";
-      flake = "/home/rudlorenz/.dotfiles";
+      flake = "${config.home.homeDirectory}/.dotfiles";
     };
 
     kitty = {
