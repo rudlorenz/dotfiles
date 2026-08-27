@@ -4,6 +4,25 @@
 
 { config, pkgs, ... }:
 
+let
+  # Evaluates USB wakeup for a HID device's parent. Triggered on every HID
+  # interface addition. It scans the parent for a boot-keyboard interface
+  # (protocol 01) and explicitly sets `enabled` or `disabled`. Because the
+  # last interface to register triggers the final evaluation, this achieves
+  # eventual consistency without needing to block udev with `sleep`.
+  usb-wakeup-decide = pkgs.writeShellScript "usb-wakeup-decide" ''
+    dev="$1"
+    for iface in /sys/bus/usb/devices/"$dev"/*/; do
+      [ -f "$iface/bInterfaceClass" ] || continue
+      [ "$(cat "$iface/bInterfaceClass")" = "03" ] || continue
+      if [ "$(cat "$iface/bInterfaceProtocol")" = "01" ]; then
+        echo enabled > /sys/bus/usb/devices/"$dev"/power/wakeup
+        exit 0
+      fi
+    done
+    echo disabled > /sys/bus/usb/devices/"$dev"/power/wakeup
+  '';
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -154,8 +173,10 @@
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="245f", ATTRS{idProduct}=="0815", ATTR{power/control}="on"
 
-    # Disable wakeup for any USB mouse (HID boot-protocol interface); keyboards still wake
-    ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{bInterfaceProtocol}=="02", RUN+="/bin/sh -c 'echo disabled > /sys/bus/usb/devices/$parent/power/wakeup'"
+    # Evaluate USB wakeup on any HID interface addition. We omit the `!= 01`
+    # filter so that late-registering keyboards can overwrite a `disabled`
+    # state set by an earlier mouse interface.
+    ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ATTR{bInterfaceClass}=="03", RUN+="${usb-wakeup-decide} $parent"
   '';
 
   # Enable touchpad support (enabled default in most desktopManager).

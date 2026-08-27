@@ -206,7 +206,7 @@ in
         "editor.mouseWheelZoom" = true;
         "editor.formatOnPaste" = true;
         "editor.minimap.enabled" = false;
-        "editor.fontFamily" = "'SauceCodePro Nerd font'";
+        "editor.fontFamily" = "'SauceCodePro Nerd Font'";
 
         "workbench.colorTheme" = "One Dark Pro Darker";
 
