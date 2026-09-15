@@ -11,6 +11,21 @@ let
 
   # slightly modified default starship theme
   default-starship = ./starship-default.toml;
+
+  # opencode v1 (`opencode`, 1.18.x) and v2 (`opencode2`, 2.0.x) must never
+  # share the same data dir: v2 migrates ~/.local/share/opencode/opencode.db
+  # to its schema, after which v1 hangs on a black screen at startup.
+  opencode-v1 = pkgs.writeShellScriptBin "opencode" ''
+    export XDG_DATA_HOME="''${XDG_DATA_HOME:-$HOME/.local/share}/opencode-v1"
+    export XDG_CACHE_HOME="''${XDG_CACHE_HOME:-$HOME/.cache}/opencode-v1"
+    exec ${inputs.llm-agents.packages.${pkgs.system}.opencode}/bin/opencode "$@"
+  '';
+
+  opencode-v2 = pkgs.writeShellScriptBin "opencode2" ''
+    export XDG_DATA_HOME="''${XDG_DATA_HOME:-$HOME/.local/share}/opencode"
+    export XDG_CACHE_HOME="''${XDG_CACHE_HOME:-$HOME/.cache}/opencode"
+    exec ${inputs.llm-agents.packages.${pkgs.system}.opencode2}/bin/opencode2 "$@"
+  '';
 in
 {
   imports = [
@@ -56,6 +71,10 @@ in
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     nerd-fonts.fira-mono
+
+    # v2 opencode; both versions share ~/.config/opencode but use separate
+    # data dirs via the wrappers above (v1 `opencode` stays from the module)
+    opencode-v2
 
     qbittorrent
   ];
@@ -179,6 +198,7 @@ in
 
     opencode = {
       enable = true;
+      package = opencode-v1;
       tui = {
         theme = "one-dark";
       };

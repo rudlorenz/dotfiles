@@ -14,6 +14,13 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Both opencode generations (v1 `opencode`, v2 `opencode2`) come from
+    # numtide/llm-agents.nix. Do not follow its nixpkgs: its packages are
+    # prebuilt/substituted against its own locked nixpkgs-unstable.
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+    };
   };
 
   outputs =
