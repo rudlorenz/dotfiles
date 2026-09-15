@@ -223,6 +223,38 @@ in
     extraPackages = [ pkgs.adwaita-icon-theme ];
   };
 
+  # GameMode: temporarily apply optimizations (performance CPU governor, P-core
+  # pinning on hybrid CPUs, GPU max performance) while a game is running.
+  programs.gamemode = {
+    enable = true;
+    settings = {
+      cpu.pin_cores = "yes"; # Intel hybrid CPUs: pin games to P-cores (auto-detected)
+      gpu = {
+        # Apply GPU optimisations while GameMode is active. Note: this keeps
+        # the GPU at max clocks during games -> more heat, more FPS.
+        apply_gpu_optimisations = "accept-responsibility";
+        nv_powermizer_mode = 1; # GPUPowerMizerMode = "Prefer Maximum Performance"
+      };
+    };
+  };
+
+  # Gamescope: per-game micro-compositor for proper fullscreen, frame pacing and
+  # lower input latency under Wayland.
+  # Doesn't really need one and it doesn't give that much, but nice to have
+  programs.gamescope = {
+    enable = true;
+    enableWsi = true; # Vulkan WSI layer for Wayland + NVIDIA
+  };
+
+  # Intel DPTF adaptive thermal management: proactively adjust cooling before
+  # the kernel's generic throttle kicks in (GS66 runs hot).
+  services.thermald.enable = true;
+
+  # NVIDIA Dynamic Boost (nvidia-powerd): shift the power budget between CPU and
+  # GPU on supported laptops (Ampere + Alder Lake qualifies).
+  # Verify SBIOS support with: nvidia-settings -q DynamicBoostSupport
+  hardware.nvidia.dynamicBoost.enable = true;
+
   # Allowing to run appimage files.
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
