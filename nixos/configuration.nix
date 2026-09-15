@@ -217,6 +217,9 @@ in
 
   programs.steam = {
     enable = true;
+    # remotePlay.openFirewall = true; # Open ports for Steam Remote Play
+    # localNetworkGameTransfers.openFirewall = true; # Open ports for PC-to-PC game transfers
+    # dedicatedServer.openFirewall = true;
     extraPackages = [ pkgs.adwaita-icon-theme ];
   };
 
@@ -276,8 +279,12 @@ in
   # services.fwupd.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Warcraft III LAN: TCP+UDP 6112 for game connections & lobby discovery.
+  # networking.firewall.allowedTCPPorts = [ 6112 ];
+  # networking.firewall.allowedUDPPorts = [ 6112 ];
+
+  # LocalSend: files over the LAN; module opens TCP+UDP 53317 by default.
+  # programs.localsend.enable = true;
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
