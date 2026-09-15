@@ -176,10 +176,19 @@ in
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="245f", ATTRS{idProduct}=="0815", ATTR{power/control}="on"
 
-    # Evaluate USB wakeup on any HID interface addition. We omit the `!= 01`
-    # filter so that late-registering keyboards can overwrite a `disabled`
-    # state set by an earlier mouse interface.
+    # Disable wakeup for the Razer 2.4 GHz dongle (composite device with
+    # keyboard sub-interfaces that cause the generic script to enable wakeup).
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="007d", ATTR{power/wakeup}="disabled"
+
+    # Skip the generic wakeup script for the Razer dongle. ATTRS traverses
+    # the parent chain, so from the interface event we can read the parent
+    # USB device's idVendor/idProduct.
+    ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ATTR{bInterfaceClass}=="03", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="007d", GOTO="usb_wakeup_end"
+
+    # Evaluate USB wakeup on any HID interface addition.
     ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ATTR{bInterfaceClass}=="03", RUN+="${usb-wakeup-decide} $parent"
+
+    LABEL="usb_wakeup_end"
   '';
 
   # Enable touchpad support (enabled default in most desktopManager).
