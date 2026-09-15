@@ -29,6 +29,9 @@ in
     ./hardware-configuration.nix
   ];
 
+  # xbox dongle driver
+  hardware.xone.enable = true;
+
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.efiSupport = true;
